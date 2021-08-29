@@ -1,0 +1,23 @@
+<mvc:View controllerName="EmployeeManager.employeemanager.controller.Menu"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+
+    <Page id="page" title="{i18n>mainMenu}" showHeader="true">
+        <content>
+            <Panel headerText="{i18n>menuEmployees}" expandable="true" expanded="true">
+                    <GenericTile headerImage="sap-icon://add-employee" class="sapUiTinyMarginBegin sapUiTinyMarginTop" press="navToNewEmployee">
+                        <TileContent footer="{i18n>createEmployee}"/>
+                    </GenericTile>
+                    <GenericTile headerImage="sap-icon://employee-lookup" class="sapUiTinyMarginBegin sapUiTinyMarginTop" press="navToViewEmployee">
+                        <TileContent footer="{i18n>showEmployee}"/>
+                    </GenericTile>
+                </Panel>
+                <Panel headerText="{i18n>menuOrders}"  expandable="true" expanded="true">
+                    <GenericTile id="SignOrders"  headerImage="sap-icon://signature" class="sapUiTinyMarginBegin sapUiTinyMarginTop" url="https://a64e839btrial-dev-logali-approuter.cfapps.eu10.hana.ondemand.com/logaligroupEmployees/index.html">
+                        <TileContent footer="{i18n>signOrders}" />
+                    </GenericTile>
+            </Panel>
+        </content>
+    </Page>
+
+</mvc:View>

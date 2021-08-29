@@ -1,0 +1,94 @@
+<mvc:View controllerName="EmployeeManager.employeemanager.controller.NewEmployee"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+
+    <Page title="{i18n>newEmployee}">
+        <content>
+            <NavContainer id="navContainer">
+                <pages>
+                    <Page showHeader="false">
+                        <content>
+                            <Wizard id="NewEmployeeWizard" class="sapUiResponsivePadding--header sapUiResponsivePadding--content" complete="EmployeeWizardCompletedHandler" height="auto">
+                                <!-- Step 1 Employee Type-->
+                                <WizardStep id="employeeTypeStep" title="{i18n>employeeTypeTitle}" validated="false">
+                                    <MessageStrip class="sapUiSmallMarginBottom" text="{i18n>employeeTypeHeader}" showIcon="true"/>
+                                    <FlexBox alignItems="Center" justifyContent="Center">
+                                        <Button id="btnEmployeeTypeInternal" text="{i18n>buttonEmployeeTypeInternal}" press="buttonEmployeeType" class="sapUiSmallMarginEnd">
+                                            <customData>
+                                                <core:CustomData key="btnTypeEmployee" value="internal"></core:CustomData>
+                                            </customData>
+                                        </Button>
+                                        <Button id="btnEmployeeTypeExternal" text="{i18n>buttonEmployeeTypeExternal}" press="buttonEmployeeType" class="sapUiSmallMarginEnd">
+                                            <customData>
+                                                <core:CustomData key="btnTypeEmployee" value="external"></core:CustomData>
+                                            </customData>
+                                        </Button>
+                                        <Button id="btnEmployeeTypeManager" text="{i18n>buttonEmployeeTypeManager}" press="buttonEmployeeType" class="sapUiSmallMarginEnd">
+                                            <customData>
+                                                <core:CustomData key="btnTypeEmployee" value="manager"></core:CustomData>
+                                            </customData>
+                                        </Button>
+                                    </FlexBox>
+                                </WizardStep>
+                                <!-- Step 2 Employee Data-->
+                                <WizardStep id="employeeDataStep" title="{i18n>employeeDataTitle}" validated="false">
+                                    <MessageStrip class="sapUiSmallMarginBottom" text="{i18n>employeeDataHeader}" showIcon="true"/>
+                                    <f:SimpleForm>
+                                        <Label text="{i18n>employeeFirstName}" required="true"/>
+                                        <Input valueState="{/_objEmployeeData/FirstNameStatus}" change="dataEmployeeCheck" value="{/FirstName}"/>
+                                        <Label text="{i18n>employeeLastName}" required="true"/>
+                                        <Input valueState="{/_objEmployeeData/LastNameStatus}" change="dataEmployeeCheck" value="{/LastName}"/>
+
+                                        <Label text="{= ${/_objEmployeeData/EmployeeType} === 'external' ? ${i18n>employeeCIF} : ${i18n>employeeDNI}}" required="true"/>
+                                        <Input value="{/Dni}" valueState="{_objEmployeeData/DniStatus}" change="onCheckDNI"></Input>
+
+                                        <Label text="{= ${/_objEmployeeData/EmployeeType} === 'external' ? ${i18n>employeeExternalSalary} : ${i18n>employeeInternaManagerlSalary}}"/>
+                                        <VBox>
+
+                                            <Slider visible="{=  ${/_objEmployeeData/EmployeeType} === 'internal'}" value="{/_objEmployeeData/EmployeeSalary}" min="12000" max="80000" step="500" inputsAsTooltips="true" showAdvancedTooltip="true" enableTickmarks="true" width="100%" progress="false" class="sapUiSmallMarginBottom">
+                                            </Slider>
+                                            <Slider visible="{=  ${/_objEmployeeData/EmployeeType} === 'external'}" value="{/_objEmployeeData/EmployeeSalary}" min="100" max="2000" step="100" inputsAsTooltips="true" showAdvancedTooltip="true" enableTickmarks="true" width="100%" progress="false" class="sapUiSmallMarginBottom">
+                                            </Slider>
+                                            <Slider visible="{=  ${/_objEmployeeData/EmployeeType} === 'manager'}" value="{/_objEmployeeData/EmployeeSalary}" min="50000" max="200000" step="1000" inputsAsTooltips="true" showAdvancedTooltip="true" enableTickmarks="true" width="100%" progress="false" class="sapUiSmallMarginBottom">
+                                            </Slider>
+                                        </VBox>
+                                        <Label text="{i18n>employeeCreationDate}" required="true"></Label>
+                                        <DatePicker dateValue="{/CreationDate}" valueState="{/_objEmployeeData/CreationDateStatus}" change="dataEmployeeCheck"></DatePicker>
+                                    </f:SimpleForm>
+                                </WizardStep>
+
+                                <!-- Step 3 Employee AdditionalData -->
+                                <WizardStep id="employeeAditionalDataStep" title="{i18n>employeeAditionalDataTitle}" validated="true">
+                                    <MessageStrip class="sapUiSmallMarginBottom" text="{i18n>employeeAdditionalDataHeader}" showIcon="true"/>
+                                    <Label text="{i18n>EmployeeComment}" width="100%"></Label>
+                                    <TextArea value="{/Comments}" width="100%"></TextArea>
+                                    <UploadCollection id="UploadCollection" maximumFilenameLength="55" maximumFileSize="10" multiple="true" sameFilenameAllowed="true" instantUpload="false" uploadUrl="/sap/opu/odata/sap/ZEMPLOYEES_SRV/Attachments" 
+                                                    change="onEmployeeFileChange"  beforeUploadStarts="onEmployeeFileBeforeUploadStart" fileDeleted="onEmployeeFileDeleted" 
+                                                    noDataDescription="{i18n>fileUploadFile}" />
+                                </WizardStep>
+                            </Wizard>
+                        </content>
+                        <footer>
+                            <OverflowToolbar>
+                                <ToolbarSpacer/>
+                                <Button text="{i18n>newEmployeeCancel}" class="sapUiSmallMargin" press="onCancelNewEmployee"/>
+                            </OverflowToolbar>
+                        </footer>
+                    </Page>
+                    <Page id="EmployeeDataReview" title="{i18n>EmployeeDataReview}">
+                        <core:Fragment fragmentName="EmployeeManager.employeemanager.fragment.EmployeeDataReview" type="XML"/>
+                        <footer>
+                            <Toolbar>
+                                <ToolbarSpacer></ToolbarSpacer>
+                                <Button id="NewEmployeeDataSave" text="{i18n>newEmployeeDataSave}" press="onSaveNewEmployee"></Button>
+                                <Button id="NewEmployeeCancel" text="{i18n>newEmployeeCancel}" press="onCancelNewEmployee"></Button>
+                            </Toolbar>
+                        </footer>
+                    </Page>
+                </pages>
+            </NavContainer>
+        </content>
+    </Page>
+</mvc:View>

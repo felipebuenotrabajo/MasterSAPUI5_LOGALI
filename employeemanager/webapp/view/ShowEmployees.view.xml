@@ -1,0 +1,70 @@
+<mvc:View controllerName="EmployeeManager.employeemanager.controller.ShowEmployees"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m"
+    xmlns:s="sap.suite.ui.commons">
+
+    <SplitApp id="SplitEmployee" initialDetail="detail" initialMaster="master">
+
+        <detailPages>
+            <Page id="detailMainEmployee" showHeader="false">
+                <FlexBox alignItems="Center" justifyContent="Center" height="100%">
+                    <Text text="{i18n>ShowEmployeesSelectEmployee}"></Text>
+                </FlexBox>
+            </Page>
+            <Page id="detailEmployee" title="{i18n>ShowEmployeesDetails}">
+                <ObjectHeader icon= "{= ${employeeModel>Type}==='0' ? 'sap-icon://employee-pane' : ${employeeModel>Type}==='1' ? 'sap-icon://employee' : 'sap-icon://leads' }" title="{employeeModel>FirstName} {employeeModel>LastName}" intro="{employeeModel>Dni}" class="sapUiResponsivePadding--header" responsive="true">
+                    <ObjectAttribute title="{i18n>employeeCreationDate}" text="{ path:'employeeModel>CreationDate', type:'sap.ui.model.type.Date'}" />
+                    <ObjectAttribute title="{i18n>employeeTypeTitle}" text="{= ${employeeModel>Type} === '0' ? ${i18n>buttonEmployeeTypeInternal} : ${employeeModel>Type} === '1' ? ${i18n>buttonEmployeeTypeExternal} : ${i18n>buttonEmployeeTypeManager}}" />
+                    <ObjectAttribute title="{i18n>EmployeeComment}" text="{employeeModel>Comments}" />
+                </ObjectHeader>
+                <IconTabBar class="sapUiResponsiveContentPadding">
+                    <items>
+                        <IconTabFilter text="{i18n>ShowEmployeesDetailsFiles}" design="Horizontal" icon="sap-icon://attachment">
+                            <UploadCollection id="UploadCollection" maximumFilenameLength="55" maximumFileSize="10" multiple="true"
+                                                                    sameFilenameAllowed="true" instantUpload="true" uploadUrl="/sap/opu/odata/sap/ZEMPLOYEES_SRV/Attachments"
+                                                                    items="{path:'employeeModel>UserToAttachment'}"
+                                                                    change="onEmployeeFileChange" uploadComplete="onEmployeeFileUploadCompleted" beforeUploadStarts="onEmployeeFileBeforeUploadStart"
+                                                                    fileDeleted="onEmployeeFileDeleted" noDataDescription="{i18n>fileUploadFile}">
+                                <items>
+                                    <UploadCollectionItem documentId="{employeeModel>AttId}" visibleEdit="false" fileName="{employeeModel>DocName}" press="onEmployeeFileDownload">
+                                    </UploadCollectionItem>
+                                </items>
+                            </UploadCollection>
+                        </IconTabFilter>
+                        <IconTabFilter icon="sap-icon://money-bills" design="Horizontal" text="{i18n>employeeHistory}">
+                            <s:Timeline enableDoubleSided="true" groupByType="Year" groupBy="CreationDate" showHeaderBar="false" enableScroll="false" height="100%" sortOldestFirst="true" content="{employeeModel>UserToSalary}">
+                                <s:content>
+                                    <s:TimelineItem userName="{parts:[{path:'employeeModel>Ammount'},{path:'employeeModel>Waers'}],
+												type: 'sap.ui.model.type.Currency',
+												formatOptions: {showMeasure: false}}" icon="sap-icon://circle-task" text="{employeeModel>Comments}" dateTime="{employeeModel>CreationDate}">
+                                    </s:TimelineItem>
+                                </s:content>
+                            </s:Timeline>
+                        </IconTabFilter>
+                    </items>
+                </IconTabBar>
+                <footer>
+                    <Toolbar>
+                        <ToolbarSpacer></ToolbarSpacer>
+                        <Button text="{i18n>employeeGetFire}" press="onGetFireEmployee"></Button>
+                        <Button text="{i18n>employeePromote}" press="onPromoteEmployee"></Button>
+                    </Toolbar>
+                </footer>
+            </Page>
+        </detailPages>
+
+        <masterPages>
+            <Page showHeader="false">
+                <Toolbar class="sapUiTinyMarginTop">
+                    <Button icon="sap-icon://nav-back" press="onPressBackMenu"></Button>
+                    <SearchField liveChange="onSearchEmployee" width="100%" />
+                </Toolbar>
+                <List id="EmployeeList" itemPress="onSelectEmployee" items="{path:'employeeModel>/Users',filters:[{path:'SapId',operator:'EQ',value1:'pipegood@gmail.com'}]}">
+                    <items>
+                        <StandardListItem title="{employeeModel>FirstName} {employeeModel>LastName}" description="{employeeModel>Dni}" type="Active"/>
+                    </items>
+                </List>
+            </Page>
+        </masterPages>
+    </SplitApp>
+</mvc:View>

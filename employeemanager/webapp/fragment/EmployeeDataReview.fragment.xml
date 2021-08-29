@@ -1,0 +1,44 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form">
+    <f:SimpleForm title="1. {i18n>employeeTypeTitle}" minWidth="1024" editable="false" layout="ResponsiveGridLayout">
+        <f:content>
+            <Label text="{i18n>EmployeeReviewType}"/>
+            <Text text="{=${/_objEmployeeData/EmployeeType} === 'internal' ? ${i18n>buttonEmployeeTypeInternal} : ${/_objEmployeeData/EmployeeType} === 'external' ? ${i18n>buttonEmployeeTypeExternal} : ${i18n>buttonEmployeeTypeManager}}"/>
+            <Link press="onEditEmployeeTypeStep" text="{i18n>EmployeeReviewEdit}" />
+        </f:content>
+    </f:SimpleForm>
+
+    <f:SimpleForm title="2. {i18n>employeeDataTitle}" minWidth="1024" editable="false" layout="ResponsiveGridLayout">
+        <f:content>
+            <Label text="{i18n>employeeFirstName}"/>
+            <Text text="{/FirstName}"/>
+            <Label text="{i18n>employeeLastName}"/>
+            <Text text="{/LastName}"/>
+            <Label text="{= ${/_objEmployeeData/EmployeeType} === 'external' ? ${i18n>employeeCIF} : ${i18n>employeeDNI}}"/>
+            <Text text="{/Dni}"/>
+            <Label text="{= ${/_objEmployeeData/EmployeeType} === 'external' ? ${i18n>employeeExternalSalary} : ${i18n>employeeInternaManagerlSalary}}"/>
+            <Text text="{/_objEmployeeData/EmployeeSalary}"/>
+            <Label text="{i18n>employeeCreationDate}"/>
+            <Text text="{path:'/CreationDate',type:'sap.ui.model.type.Date'}"/>
+            <Link press="onEditEmployeeDataStep" text="{i18n>EmployeeReviewEdit}" />
+        </f:content>
+    </f:SimpleForm>
+
+    <f:SimpleForm title="3. {i18n>employeeAditionalDataTitle}" minWidth="1024" editable="false" layout="ResponsiveGridLayout">
+        <f:content>
+            <Label text="{i18n>EmployeeComment}"/>
+            <Text text="{/Comments}"/>
+            <Label text="{i18n>EmployeeReviewDocuments}"/>
+            <Text text=" {/_nFiles} {= ${/_nFiles} === 1 ? ${i18n>EmployeeReviewfile} : ${i18n>EmployeeReviewfiles}}"/>
+            <Label></Label>
+            <List items="{/_arrayFiles}">
+                <items>
+                    <StandardListItem title="{DocName}"></StandardListItem>
+                </items>
+            </List>
+            <Link press="onEditEmployeeAditionalDataStep" text="{i18n>EmployeeReviewEdit}" />
+        </f:content>
+    </f:SimpleForm>
+
+</core:FragmentDefinition>
