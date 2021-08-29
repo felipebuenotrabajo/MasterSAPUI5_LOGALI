@@ -13,25 +13,11 @@ sap.ui.define([
         "use strict";
 
         function onBeforeRendering() {
-            // var oView = this.getView();
-            // var oJSONModelEmpl = new sap.ui.model.json.JSONModel({});
-            // oView.setModel(oJSONModelEmpl);
-            // var detailEmployee = this.byId("detailEmployee");
-            // detailEmployee.unbindElement("employeeModel>/Users(EmployeeId='" + this.EmployeeId + "',SapId='" + this.getOwnerComponent().SapId + "')");
-            // this.EmployeeId = "";
         };
         function onInit() {
             
-            // var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             var oRouter = this.getOwnerComponent().getRouter().getRoute("RouteShowEmployees")
             oRouter.attachPatternMatched(function (oEvent) {
-                // Aquí se hace lo que se desee, limpiar campos, actualizar valores,...
-                // var oView = this.getView();
-                // var oJSONModelEmpl = new sap.ui.model.json.JSONModel({});
-                // oView.setModel(oJSONModelEmpl);
-                // var detailEmployee = this.byId("detailEmployee");
-                // detailEmployee.unbindElement("employeeModel>/Users(EmployeeId='" + this.EmployeeId + "',SapId='" + this.getOwnerComponent().SapId + "')");
-                // this.EmployeeId = "";
                 this.byId("SplitEmployee").to(this.createId("detailMainEmployee"));                
             }, this);
 
